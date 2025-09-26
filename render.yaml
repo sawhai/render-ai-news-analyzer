@@ -1,17 +1,18 @@
 services:
   - type: web
-    name: banking-news-analyzer
+    name: ai-news-analyzer
     env: python
-    plan: starter
+    plan: free
     buildCommand: |
       pip install -r requirements.txt
-      playwright install chromium
-      playwright install-deps
-    startCommand: python main.py
+      python -m playwright install chromium
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: OPENAI_API_KEY
         sync: false
-      - key: PORT
-        value: 8000
       - key: DATA_DIR
         value: /tmp/bank_news_data
+      - key: PYTHON_VERSION
+        value: 3.11.6
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /opt/render/project/.playwright
